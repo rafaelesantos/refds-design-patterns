@@ -7,7 +7,7 @@ public final class RefdsReduxStore<State>: ObservableObject {
     private var reducer: RefdsReduxReducer<State>
     private var middlewares: [RefdsReduxMiddleware<State>]
     private let queue = DispatchQueue(
-        label: "refds.gym.middleware",
+        label: "refds.designPatterns.redux.middleware",
         qos: .userInteractive,
         attributes: .concurrent
     )
