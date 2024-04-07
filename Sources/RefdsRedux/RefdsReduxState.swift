@@ -1,4 +1,3 @@
 import Foundation
-import RefdsShared
 
-public protocol RefdsReduxState: RefdsModel {}
+public protocol RefdsReduxState {}
