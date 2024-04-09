@@ -4,8 +4,9 @@ import SwiftUI
 public final class RefdsReduxStore<State>: ObservableObject {
     @Published public var state: State
     
-    private var reducer: RefdsReduxReducer<State>
-    private var middlewares: [RefdsReduxMiddleware<State>]
+    public var middlewares: [RefdsReduxMiddleware<State>]
+    public var reducer: RefdsReduxReducer<State>
+    
     private let queue = DispatchQueue(
         label: "refds.designPatterns.redux.middleware",
         qos: .userInteractive,
