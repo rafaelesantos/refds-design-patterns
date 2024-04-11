@@ -30,7 +30,7 @@ public final class RefdsReduxStore<State>: ObservableObject {
         }
         
         self.middlewares.forEach { middleware in
-            queue.sync {
+            queue.async {
                 middleware(self.state, action, self.dispatch)
             }
         }
