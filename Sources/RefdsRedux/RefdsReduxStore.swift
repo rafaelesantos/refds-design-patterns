@@ -23,7 +23,7 @@ public final class RefdsReduxStore<State>: ObservableObject {
     }
     
     public func dispatch(action: RefdsReduxAction) {
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             withAnimation {
                 self.state = self.reducer(self.state, action)
             }
