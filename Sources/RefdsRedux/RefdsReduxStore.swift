@@ -9,8 +9,7 @@ public final class RefdsReduxStore<State>: ObservableObject {
     
     private let queue = DispatchQueue(
         label: "refds.designPatterns.redux.middleware",
-        qos: .userInteractive,
-        attributes: .concurrent
+        qos: .userInteractive
     )
     
     public init(
@@ -24,14 +23,14 @@ public final class RefdsReduxStore<State>: ObservableObject {
     }
     
     public func dispatch(action: RefdsReduxAction) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.sync {
             withAnimation {
                 self.state = self.reducer(self.state, action)
             }
         }
         
         self.middlewares.forEach { middleware in
-            queue.async {
+            queue.sync {
                 middleware(self.state, action, self.dispatch)
             }
         }
