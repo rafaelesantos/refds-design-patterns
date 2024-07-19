@@ -9,8 +9,7 @@ public final class RefdsReduxStore<State>: ObservableObject {
     
     private let queue = DispatchQueue(
         label: "refds.designPatterns.redux.middleware",
-        qos: .userInteractive,
-        attributes: .concurrent
+        qos: .userInteractive
     )
     
     public init(
