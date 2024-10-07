@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol RefdsReduxMiddleware {
-    func middleware<State: RefdsReduxState>(
+    func middleware<State>(
         state: State,
         action: RefdsReduxAction
     ) -> AsyncStream<RefdsReduxAction>

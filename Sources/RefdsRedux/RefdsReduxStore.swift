@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
-public class RefdsReduxStore<State: RefdsReduxState>: ObservableObject {
+public class RefdsReduxStore<State>: ObservableObject {
     @Published public var state: State
     public let reducer: RefdsReduxReducer
     public let middlewares: [RefdsReduxMiddleware]
