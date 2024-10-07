@@ -1,8 +1,8 @@
 import Foundation
 
 public protocol RefdsReduxReducer {
-    func reduce<State>(
-        state: State,
+    func reduce(
+        state: RefdsReduxState,
         action: RefdsReduxAction
     ) -> RefdsReduxState
 }
