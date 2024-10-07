@@ -4,12 +4,12 @@ import SwiftUI
 @MainActor
 public class RefdsReduxStore: ObservableObject {
     @Published public var state: RefdsReduxState
-    public let reducer: RefdsReduxReducer
+    public let reducer: RefdsReduxReducer<RefdsReduxState>
     public let middlewares: [RefdsReduxMiddleware]
     
     public init(
         state: RefdsReduxState,
-        reducer: RefdsReduxReducer,
+        reducer: RefdsReduxReducer<RefdsReduxState>,
         middlewares: [RefdsReduxMiddleware] = []
     ) {
         self._state = Published(initialValue: state)
@@ -18,7 +18,7 @@ public class RefdsReduxStore: ObservableObject {
     }
     
     public func dispatch(action: RefdsReduxAction) async {
-        let stateReduced = reducer.reduce(
+        let stateReduced = await reducer.reduce(
             state: state,
             action: action
         )
