@@ -1,3 +1,3 @@
 import Foundation
 
-public protocol RefdsReduxState {}
+public protocol RefdsReduxState: Sendable {}

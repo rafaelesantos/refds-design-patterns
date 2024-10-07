@@ -1,38 +1,38 @@
 import Foundation
 import SwiftUI
 
-public final class RefdsReduxStore<State>: ObservableObject {
+@MainActor
+public class RefdsReduxStore<State: RefdsReduxState>: ObservableObject {
     @Published public var state: State
-    
-    public var middlewares: [RefdsReduxMiddleware<State>]
-    public var reducer: RefdsReduxReducer<State>
-    
-    private let queue = DispatchQueue(
-        label: "refds.designPatterns.redux.middleware",
-        qos: .userInteractive,
-        attributes: .concurrent
-    )
+    public let reducer: RefdsReduxReducer
+    public let middlewares: [RefdsReduxMiddleware]
     
     public init(
-        reducer: @escaping RefdsReduxReducer<State>,
         state: State,
-        middlewares: [RefdsReduxMiddleware<State>] = []
+        reducer: RefdsReduxReducer,
+        middlewares: [RefdsReduxMiddleware] = []
     ) {
+        self._state = Published(initialValue: state)
         self.reducer = reducer
-        self.state = state
         self.middlewares = middlewares
     }
     
-    public func dispatch(action: RefdsReduxAction) {
-        DispatchQueue.main.async {
-            withAnimation {
-                self.state = self.reducer(self.state, action)
-            }
-        }
+    public func dispatch(action: RefdsReduxAction) async {
+        let stateReduced = reducer.reduce(
+            state: state,
+            action: action
+        )
         
-        self.middlewares.forEach { middleware in
-            queue.async {
-                middleware(self.state, action, self.dispatch)
+        withAnimation(.easeInOut) { state = stateReduced }
+        
+        for middleware in middlewares {
+            let actions = middleware.middleware(
+                state: stateReduced,
+                action: action
+            )
+            
+            for await action in actions {
+                await dispatch(action: action)
             }
         }
     }

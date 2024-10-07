@@ -1,3 +1,3 @@
 import Foundation
 
-public protocol RefdsReduxAction {}
+public protocol RefdsReduxAction: Sendable {}
