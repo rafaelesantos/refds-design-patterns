@@ -2,6 +2,7 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import CompilerPluginSupport
 
 let package = Package(
     name: "RefdsDesignPatterns",
@@ -21,16 +22,21 @@ let package = Package(
             targets: ["RefdsRedux"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/rafaelesantos/refds-shared.git", branch: "main")
+        .package(url: "https://github.com/rafaelesantos/refds-shared.git", branch: "main"),
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", branch: "main")
     ],
     targets: [
+        .macro(
+            name: "RefdsReduxMacros",
+            dependencies: [
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+            ]),
         .target(
             name: "RefdsRedux",
             dependencies: [
-                .product(
-                    name: "RefdsShared",
-                    package: "refds-shared"
-                )
-            ]),
+                "RefdsReduxMacros",
+                .product(name: "RefdsShared", package: "refds-shared")
+            ])
     ]
 )
